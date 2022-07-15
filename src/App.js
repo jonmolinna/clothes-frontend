@@ -1,12 +1,18 @@
 import { Box } from "@mui/material";
-import Login from "./pages/Login";
 import { grey } from '@mui/material/colors';
+import AppRouter from "./routers/AppRouter";
+
+// redux
+import { Provider } from 'react-redux';
+import { store } from './features/store';
 
 function App() {
   return (
-    <Box sx={{ bgcolor: grey[200] }}>
-      <Login />
-    </Box>
+    <Provider store={store}>
+      <Box sx={{ bgcolor: grey[200] }}>
+        <AppRouter />
+      </Box>
+    </Provider>
   );
 }
 
