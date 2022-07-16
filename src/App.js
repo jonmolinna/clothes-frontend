@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import { grey } from '@mui/material/colors';
 import AppRouter from "./routers/AppRouter";
+import { theme } from "./theme";
+import { ThemeProvider } from '@mui/material/styles';
 
 // redux
 import { Provider } from 'react-redux';
@@ -10,7 +12,9 @@ function App() {
   return (
     <Provider store={store}>
       <Box sx={{ bgcolor: grey[200] }}>
-        <AppRouter />
+        <ThemeProvider theme={theme}>
+          <AppRouter />
+        </ThemeProvider>
       </Box>
     </Provider>
   );
