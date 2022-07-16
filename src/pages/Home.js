@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Grid } from '@mui/material'
 import Header from '../components/header/Header'
 import Sidebar from '../components/sidebar/Sidebar'
+import Layout from '../layouts/Layout'
 
 const Home = () => {
     return (
@@ -9,7 +10,9 @@ const Home = () => {
             <Header />
             <Grid container>
                 <Sidebar />
-                <Grid item xs={10} sm={11} md={10}>Body</Grid>
+                <Layout>
+                    <p>Rutas</p>
+                </Layout>
             </Grid>
         </Box>
     )

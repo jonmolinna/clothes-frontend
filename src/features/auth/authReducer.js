@@ -32,7 +32,12 @@ export const login = createAsyncThunk('auth', async (userData, thunkApi) => {
         const error = err.response.data.message;
         return thunkApi.rejectWithValue(error)
     }
-})
+});
+
+// Logout User
+export const logout = createAsyncThunk('logout', async () => {
+    localStorage.removeItem('mvidia_jwt')
+});
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -52,6 +57,11 @@ export const authSlice = createSlice({
                 state.auth = null;
                 state.isLoading = false;
                 state.error = action.payload;
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.auth = null;
+                state.isLoading = false;
+                state.error = null;
             })
     }
 });
