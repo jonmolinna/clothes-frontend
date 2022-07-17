@@ -16,11 +16,11 @@ const Sidebar = () => {
             <Box sx={{ bgcolor: blueGrey[900] }}>
                 <List component="div" sx={{ p: "0" }}>
                     <Box sx={{ overflowY: "scroll", overflowX: "hidden", height: "calc(100vh - 2.5rem)" }}>
-                        <SidebarItems Icon={HomeIcon} item="Home" />
-                        <SidebarItems Icon={PersonIcon} item="Cliente" />
-                        <SidebarItems Icon={ProductionQuantityLimitsIcon} item="Producto" />
-                        <SidebarItems Icon={LoyaltyIcon} item="Venta" />
-                        <SidebarItems Icon={GroupIcon} item="Usuario" />
+                        <SidebarItems to="/" Icon={HomeIcon} item="Home" />
+                        <SidebarItems to="/customer" Icon={PersonIcon} item="Cliente" />
+                        <SidebarItems to="/product" Icon={ProductionQuantityLimitsIcon} item="Producto" />
+                        <SidebarItems to="/sales" Icon={LoyaltyIcon} item="Venta" />
+                        <SidebarItems to="/users" Icon={GroupIcon} item="Usuario" />
                         <SidebarItemsMultiple Icon={SettingsIcon} item="Ajuste" />
                     </Box>
                 </List>

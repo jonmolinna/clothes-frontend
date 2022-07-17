@@ -27,10 +27,10 @@ const SidebarItemsMultiple = ({ Icon, item }) => {
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     <Box>
-                        <SidebarItems Icon={CategoryIcon} item="Categoria" />
-                        <SidebarItems Icon={FemaleIcon} item="Género" />
-                        <SidebarItems Icon={HeightIcon} item="Talla" />
-                        <SidebarItems Icon={ColorLensIcon} item="Color" />
+                        <SidebarItems to="/category" Icon={CategoryIcon} item="Categoria" />
+                        <SidebarItems to="/gender" Icon={FemaleIcon} item="Género" />
+                        <SidebarItems to="/size" Icon={HeightIcon} item="Talla" />
+                        <SidebarItems to="/color" Icon={ColorLensIcon} item="Color" />
                     </Box>
                 </List>
             </Collapse>
