@@ -1,25 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { red, cyan, grey } from '@mui/material/colors';
-import { useSelector } from 'react-redux';
 import moment from 'moment';
 import 'moment/locale/es';
 import { Capitalize } from '../../utils/capitalize';
 import ModalConfirm from '../modal/ModalConfirm';
 import useModal from '../../hooks/useModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { editColor } from '../../features/color/colorReducer';
 
 const ColorTable = () => {
     const { colors } = useSelector(state => state.color);
-    const [isOpen, openModal, closeModal, isDeleting, deleteItem] = useModal();
-
-
-    useEffect(() => {
-        console.log('Eliminado')
-        console.log(isDeleting)
-        deleteItem(false);
-    }, [isDeleting, deleteItem]);
+    const [isOpen, openModal, closeModal] = useModal();
+    const dispatch = useDispatch();
 
     return (
         <TableContainer sx={{ mt: "1rem" }}>
@@ -55,6 +50,7 @@ const ColorTable = () => {
                                         <DeleteOutlineOutlinedIcon />
                                     </IconButton>
                                     <IconButton
+                                        onClick={() => dispatch(editColor(color))}
                                         sx={{ color: cyan[700] }}
                                     >
                                         <EditOutlinedIcon />
@@ -68,7 +64,6 @@ const ColorTable = () => {
             <ModalConfirm
                 open={isOpen}
                 closeModal={closeModal}
-                deleteItem={deleteItem}
             />
         </TableContainer>
     )

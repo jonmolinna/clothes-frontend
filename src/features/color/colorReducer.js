@@ -5,6 +5,8 @@ const initialState = {
     colors: null,
     isLoading: false,
     error: null,
+    isEditing: false,
+    colorEditing: null,
 };
 
 // GET ALL COLORS
@@ -47,10 +49,38 @@ export const addColor = createAsyncThunk('post/color', async (colorData, thunkAp
     }
 });
 
+// UPDATE COLOR
+export const updateColor = createAsyncThunk('put/color', async (colorData, thunkApi) => {
+    const { id, color, token } = colorData;
+    try {
+        let options = {
+            method: 'PUT',
+            headers: {
+                "Content-type": "application/json; charset=utf-8",
+                "authorization": `Bearer ${token}`,
+            },
+            data: JSON.stringify({
+                name: color
+            })
+        };
+        const res = await axios(`/color/${id}`, options);
+        return res.data;
+    } catch (err) {
+        const error = err.response.data.message;
+        console.log('yooo', error);
+        return thunkApi.rejectWithValue(error);
+    }
+});
+
 export const colorSlice = createSlice({
     name: 'color',
     initialState,
-    reducers: {},
+    reducers: {
+        editColor: (state, action) => {
+            state.isEditing = true;
+            state.colorEditing = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getAllColor.pending, (state) => {
@@ -78,7 +108,25 @@ export const colorSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload;
             })
+            .addCase(updateColor.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateColor.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isEditing = false;
+                state.colorEditing = null;
+                state.error = null;
+                state.colors = state.colors.map(item => item.id === action.payload.id ? action.payload : item)
+            })
+            .addCase(updateColor.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                state.isEditing = false;
+                state.colorEditing = null;
+            })
     }
 });
+
+export const { editColor } = colorSlice.actions;
 
 export default colorSlice.reducer;

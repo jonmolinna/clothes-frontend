@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import React from 'react'
 
-const ModalConfirm = ({ open, closeModal, deleteItem }) => {
+const ModalConfirm = ({ open, closeModal }) => {
 
     return (
         <Dialog
@@ -12,7 +12,7 @@ const ModalConfirm = ({ open, closeModal, deleteItem }) => {
                 ¿Estas seguro de eliminar?
             </DialogTitle>
             <DialogActions>
-                <Button onClick={() => deleteItem(true)}>
+                <Button onClick={closeModal}>
                     Eliminar
                 </Button>
                 <Button onClick={closeModal} autoFocus>

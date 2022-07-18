@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../layouts/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllColor, addColor } from '../features/color/colorReducer';
+import { getAllColor, addColor, updateColor } from '../features/color/colorReducer';
 import { Button, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import ColorTable from '../components/colors/ColorTable';
@@ -11,17 +11,34 @@ const Color = () => {
     const [color, setColor] = useState("");
     const token = localStorage.getItem('mvidia_jwt');
     const dispatch = useDispatch();
-    const { isLoading } = useSelector(state => state.color);
+    const { isLoading, isEditing, colorEditing } = useSelector(state => state.color);
 
     useEffect(() => {
         dispatch(getAllColor(token));
     }, [token, dispatch]);
 
+    useEffect(() => {
+        if (isEditing) {
+            setColor(colorEditing?.name)
+        } else {
+            setColor("");
+        }
+    }, [isEditing, colorEditing?.name]);
+
     const handleAddColor = (e) => {
         e.preventDefault();
-        dispatch(addColor({ color, token }));
+
+        if (isEditing) {
+            dispatch(updateColor({
+                id: colorEditing?.id,
+                color,
+                token,
+            }));
+        } else {
+            dispatch(addColor({ color, token }));
+        }
         setColor("");
-    }
+    };
 
     return (
         <Layout>
@@ -48,8 +65,11 @@ const Color = () => {
                         size="small"
                         type="submit"
                         variant="contained"
+                        disabled={!(color)}
                     >
-                        Guardar
+                        {
+                            isEditing ? 'Editar' : 'Guardar'
+                        }
                     </Button>
                 </Box>
                 <ColorTable />
@@ -58,4 +78,4 @@ const Color = () => {
     )
 }
 
-export default Color
+export default Color;
