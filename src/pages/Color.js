@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../layouts/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllColor, addColor, updateColor } from '../features/color/colorReducer';
-import { Button, TextField, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Button, TextField, Typography, Box } from '@mui/material';
 import ColorTable from '../components/colors/ColorTable';
 import Loading from '../components/loader/Loading';
 
