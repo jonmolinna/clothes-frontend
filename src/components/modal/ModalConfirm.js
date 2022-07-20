@@ -1,7 +1,15 @@
-import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
-import React from 'react'
+import React from 'react';
+import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
-const ModalConfirm = ({ open, closeModal }) => {
+
+const ModalConfirm = ({ open, closeModal, isDelete }) => {
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        dispatch(isDelete(true));
+        closeModal();
+    };
 
     return (
         <Dialog
@@ -12,7 +20,7 @@ const ModalConfirm = ({ open, closeModal }) => {
                 ¿Estas seguro de eliminar?
             </DialogTitle>
             <DialogActions>
-                <Button onClick={closeModal}>
+                <Button onClick={handleClick}>
                     Eliminar
                 </Button>
                 <Button onClick={closeModal} autoFocus>

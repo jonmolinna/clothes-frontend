@@ -3,10 +3,16 @@ import { blueGrey } from '@mui/material/colors';
 import { Box, Button, Typography } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '../../features/auth/authReducer';
+import { resetColor } from '../../features/color/colorReducer';
 import { useDispatch } from 'react-redux';
 
 const Header = () => {
     const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(resetColor());
+        dispatch(logout());
+    };
 
     return (
         <Box sx={{ bgcolor: blueGrey[800], height: "2.5rem" }} >
@@ -16,7 +22,7 @@ const Header = () => {
                         Mvidia
                     </Typography>
                     <Button
-                        onClick={() => dispatch(logout())}
+                        onClick={handleLogout}
                         endIcon={<LogoutIcon />}
                         color="info"
                     >

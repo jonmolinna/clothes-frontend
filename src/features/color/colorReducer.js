@@ -7,6 +7,7 @@ const initialState = {
     error: null,
     isEditing: false,
     colorEditing: null,
+    isDeleting: false,
 };
 
 // GET ALL COLORS
@@ -67,7 +68,29 @@ export const updateColor = createAsyncThunk('put/color', async (colorData, thunk
         return res.data;
     } catch (err) {
         const error = err.response.data.message;
-        console.log('yooo', error);
+        return thunkApi.rejectWithValue(error);
+    }
+});
+
+// DELETE COLOR
+export const deleteColor = createAsyncThunk('delete/color', async (colorData, thunkApi) => {
+    const { id, token } = colorData;
+    try {
+        let options = {
+            method: 'DELETE',
+            headers: {
+                "Content-type": "application/json; charset=utf-8",
+                "authorization": `Bearer ${token}`,
+            }
+        };
+
+        const res = await axios(`/color/${id}`, options);
+        if (res.data.statusCode === 200) {
+            return id;
+        }
+        return 0;
+    } catch (err) {
+        const error = err.response.data.message;
         return thunkApi.rejectWithValue(error);
     }
 });
@@ -79,6 +102,17 @@ export const colorSlice = createSlice({
         editColor: (state, action) => {
             state.isEditing = true;
             state.colorEditing = action.payload;
+        },
+        isDeleteColor: (state) => {
+            state.isDeleting = true;
+        },
+        resetColor: (state) => {
+            state.colors = null;
+            state.isLoading = false;
+            state.error = null;
+            state.isEditing = false;
+            state.colorEditing = null;
+            state.isDeleting = false;
         }
     },
     extraReducers: (builder) => {
@@ -124,9 +158,23 @@ export const colorSlice = createSlice({
                 state.isEditing = false;
                 state.colorEditing = null;
             })
+            .addCase(deleteColor.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteColor.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                state.isDeleting = false;
+                state.colors = state.colors.filter(item => item.id !== action.payload);
+            })
+            .addCase(deleteColor.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                state.isDeleting = false;
+            })
     }
 });
 
-export const { editColor } = colorSlice.actions;
+export const { editColor, isDeleteColor, resetColor } = colorSlice.actions;
 
 export default colorSlice.reducer;
