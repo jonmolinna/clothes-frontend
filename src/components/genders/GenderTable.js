@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableContainer } from '@mui/material'
-import SizeTableHeader from './SizeTableHeader';
-import SizeTableBody from './SizeTableBody';
+import { Table, TableContainer } from '@mui/material';
+import GenderTableHeader from './GenderTableHeader';
+import GenderTableBody from './GenderTableBody';
 import ModalConfirm from '../modal/ModalConfirm';
 import useModal from '../../hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { isDeleteSize, deleteSize } from '../../features/size/sizeReducer';
-import SizeTableFooter from './SizeTableFooter';
+import { isDeleteGender, deleteGender } from '../../features/gender/genderReducer';
+import GenderTableFooter from './GenderTableFooter';
 
-const SizeTabla = () => {
+const GenderTable = () => {
     const [idDeleting, setIdDeleting] = useState(null);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [isOpen, openModal, closeModal] = useModal();
     const token = localStorage.getItem('mvidia_jwt');
-    const { sizes, isDeleting } = useSelector(state => state.size);
+    const [isOpen, openModal, closeModal] = useModal();
+    const { genders, isDeleting } = useSelector(state => state.gender);
     const dispatch = useDispatch();
 
     const handleDelete = (id) => {
@@ -24,7 +24,7 @@ const SizeTabla = () => {
 
     useEffect(() => {
         if (isDeleting && idDeleting) {
-            dispatch(deleteSize({ id: idDeleting, token }));
+            dispatch(deleteGender({ id: idDeleting, token }));
             setIdDeleting(null);
         }
     }, [isDeleting, idDeleting, token, dispatch]);
@@ -38,18 +38,18 @@ const SizeTabla = () => {
         setPage(0);
     };
 
-    const newData = sizes?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    const newData = genders?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
         <TableContainer sx={{ mt: "1rem" }}>
             <Table size="small" sx={{ minWidth: 450 }}>
-                <SizeTableHeader />
-                <SizeTableBody
-                    sizes={newData}
+                <GenderTableHeader />
+                <GenderTableBody
+                    genders={newData}
                     handleDelete={handleDelete}
                 />
-                <SizeTableFooter
-                    sizes={sizes}
+                <GenderTableFooter
+                    genders={genders}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     handleChangePage={handleChangePage}
@@ -59,10 +59,10 @@ const SizeTabla = () => {
             <ModalConfirm
                 open={isOpen}
                 closeModal={closeModal}
-                isDelete={isDeleteSize}
+                isDelete={isDeleteGender}
             />
         </TableContainer>
     )
 }
 
-export default SizeTabla
+export default GenderTable;

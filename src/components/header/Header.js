@@ -5,6 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '../../features/auth/authReducer';
 import { resetColor } from '../../features/color/colorReducer';
 import { resetSize } from '../../features/size/sizeReducer';
+import { resetGender } from '../../features/gender/genderReducer';
 import { useDispatch } from 'react-redux';
 
 const Header = () => {
@@ -13,6 +14,7 @@ const Header = () => {
     const handleLogout = () => {
         dispatch(resetColor());
         dispatch(resetSize());
+        dispatch(resetGender());
         dispatch(logout());
     };
 
