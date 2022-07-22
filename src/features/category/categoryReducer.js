@@ -2,16 +2,16 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../utils/axios';
 
 const initialState = {
-    sizes: null,
+    categories: null,
     isLoading: false,
     error: null,
     isDeleting: false,
     isEditing: false,
-    sizeEditing: null,
+    categoryEditing: null,
 };
 
-// GET ALL SIZES
-export const getAllSizes = createAsyncThunk('get/size', async (token, thunkApi) => {
+// GET ALL CATEGORY
+export const getAllCategories = createAsyncThunk('get/category', async (token, thunkApi) => {
     try {
         let options = {
             method: 'GET',
@@ -20,7 +20,7 @@ export const getAllSizes = createAsyncThunk('get/size', async (token, thunkApi) 
                 "authorization": `Bearer ${token}`,
             }
         };
-        const res = await axios('/size', options);
+        const res = await axios('/category', options);
         return res.data;
     } catch (err) {
         const error = err.response.data.message;
@@ -28,9 +28,9 @@ export const getAllSizes = createAsyncThunk('get/size', async (token, thunkApi) 
     }
 });
 
-// DELETE SIZE
-export const deleteSize = createAsyncThunk('delete/size', async (sizeData, thunkApi) => {
-    const { id, token } = sizeData;
+// DELETE CATEGORY
+export const deleteCategory = createAsyncThunk('delete/category', async (categoryData, thunkApi) => {
+    const { id, token } = categoryData;
     try {
         let options = {
             method: 'DELETE',
@@ -40,7 +40,7 @@ export const deleteSize = createAsyncThunk('delete/size', async (sizeData, thunk
             }
         };
 
-        const res = await axios(`/size/${id}`, options);
+        const res = await axios(`/category/${id}`, options);
         if (res.data.statusCode === 200) {
             return id;
         }
@@ -51,9 +51,9 @@ export const deleteSize = createAsyncThunk('delete/size', async (sizeData, thunk
     }
 });
 
-// ADD SIZE
-export const addSize = createAsyncThunk('post/size', async (sizeData, thunkApi) => {
-    const { size, token } = sizeData;
+// ADD CATEGORY
+export const addCategory = createAsyncThunk('post/category', async (categoryData, thunkApi) => {
+    const { category, token } = categoryData;
     try {
         let options = {
             method: 'POST',
@@ -62,20 +62,20 @@ export const addSize = createAsyncThunk('post/size', async (sizeData, thunkApi) 
                 "authorization": `Bearer ${token}`,
             },
             data: JSON.stringify({
-                name: size
+                name: category
             })
-        };
-        const res = await axios('/size', options);
-        return res.data;
+        }
+        const res = await axios('/category', options);
+        return res.data
     } catch (err) {
         const error = err.response.data.message;
         return thunkApi.rejectWithValue(error);
     }
 });
 
-// UPDATE SIZE
-export const updateSize = createAsyncThunk('put/size', async (sizeData, thunkApi) => {
-    const { id, size, token } = sizeData;
+// UPDATE CATEGORY
+export const updateCategory = createAsyncThunk('put/category', async (categoryData, thunkApi) => {
+    const { id, category, token } = categoryData;
     try {
         let options = {
             method: 'PUT',
@@ -84,97 +84,91 @@ export const updateSize = createAsyncThunk('put/size', async (sizeData, thunkApi
                 "authorization": `Bearer ${token}`,
             },
             data: JSON.stringify({
-                name: size
+                name: category
             })
         };
-        const res = await axios(`/size/${id}`, options);
+        const res = await axios(`/category/${id}`, options);
         return res.data;
     } catch (err) {
         const error = err.response.data.message;
         return thunkApi.rejectWithValue(error);
     }
-})
+});
 
-export const sizeSlice = createSlice({
-    name: 'size',
+
+export const categorySlice = createSlice({
+    name: 'category',
     initialState,
     reducers: {
-        isDeleteSize: (state) => {
+        isDeleteCategory: (state) => {
             state.isDeleting = true;
         },
-        editSize: (state, action) => {
+        editCategory: (state, action) => {
             state.isEditing = true;
-            state.sizeEditing = action.payload;
+            state.categoryEditing = action.payload;
         },
-        resetSize: (state) => {
-            state.sizes = null;
-            state.isLoading = false;
-            state.error = null;
-            state.isDeleting = false;
-            state.isEditing = false;
-            state.sizeEditing = null;
-        }
+        resetCategory: () => initialState,
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getAllSizes.pending, (state) => {
+            .addCase(getAllCategories.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(getAllSizes.fulfilled, (state, action) => {
-                state.sizes = action.payload;
+            .addCase(getAllCategories.fulfilled, (state, action) => {
+                state.categories = action.payload;
                 state.isLoading = false;
                 state.error = null;
             })
-            .addCase(getAllSizes.rejected, (state, action) => {
-                state.sizes = null;
+            .addCase(getAllCategories.rejected, (state, action) => {
+                state.categories = null;
                 state.isLoading = false;
                 state.error = action.payload;
             })
-            .addCase(deleteSize.pending, (state) => {
+            .addCase(deleteCategory.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(deleteSize.fulfilled, (state, action) => {
+            .addCase(deleteCategory.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.isDeleting = false;
-                state.sizes = state.sizes.filter(item => item.id !== action.payload);
+                state.categories = state.categories.filter(item => item.id !== action.payload);
             })
-            .addCase(deleteSize.rejected, (state, action) => {
+            .addCase(deleteCategory.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
                 state.isDeleting = false;
             })
-            .addCase(addSize.pending, (state) => {
+            .addCase(addCategory.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(addSize.fulfilled, (state, action) => {
+            .addCase(addCategory.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
-                state.sizes = [action.payload, ...state.sizes];
+                state.categories = [action.payload, ...state.categories];
             })
-            .addCase(addSize.rejected, (state, action) => {
+            .addCase(addCategory.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             })
-            .addCase(updateSize.pending, (state) => {
+            .addCase(updateCategory.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(updateSize.fulfilled, (state, action) => {
+            .addCase(updateCategory.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isEditing = false;
-                state.sizeEditing = null;
+                state.categoryEditing = null;
                 state.error = null;
-                state.sizes = state.sizes.map(item => item.id === action.payload.id ? action.payload : item)
+                state.categories = state.categories.map(item => item.id === action.payload.id ? action.payload : item);
             })
-            .addCase(updateSize.rejected, (state, action) => {
+            .addCase(updateCategory.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
                 state.isEditing = false;
-                state.sizeEditing = null;
+                state.categoryEditing = null;
             })
-    },
+    }
 });
 
-export const { isDeleteSize, editSize, resetSize } = sizeSlice.actions;
+export const { isDeleteCategory, editCategory, resetCategory } = categorySlice.actions;
 
-export default sizeSlice.reducer;
+export default categorySlice.reducer;

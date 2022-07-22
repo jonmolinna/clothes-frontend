@@ -6,6 +6,7 @@ import { logout } from '../../features/auth/authReducer';
 import { resetColor } from '../../features/color/colorReducer';
 import { resetSize } from '../../features/size/sizeReducer';
 import { resetGender } from '../../features/gender/genderReducer';
+import { resetCategory } from '../../features/category/categoryReducer';
 import { useDispatch } from 'react-redux';
 
 const Header = () => {
@@ -15,6 +16,7 @@ const Header = () => {
         dispatch(resetColor());
         dispatch(resetSize());
         dispatch(resetGender());
+        dispatch(resetCategory());
         dispatch(logout());
     };
 

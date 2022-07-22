@@ -2,12 +2,12 @@ import React from 'react';
 import { TableCell, TableHead, TableRow } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
-const GenderTableHeader = () => {
+const CategoryTableHeader = () => {
     return (
-        <TableHead >
+        <TableHead>
             <TableRow>
                 <TableCell sx={{ backgroundColor: grey[700], color: "#fff" }}>
-                    Géneros
+                    Categorias
                 </TableCell>
                 <TableCell sx={{ backgroundColor: grey[700], color: "#fff" }} align="right">
                     Fecha
@@ -20,4 +20,4 @@ const GenderTableHeader = () => {
     )
 }
 
-export default GenderTableHeader
+export default CategoryTableHeader
